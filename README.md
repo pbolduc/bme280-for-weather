@@ -1,7 +1,8 @@
 
 # BME280 for Weather
 
-This is an opinionated library targeting the BME280 sensor for weather sensing only.
+This is an opinionated library targeting the BME280 sensor for weather sensing only. At present, this is a commit 
+of my Platform IO project. The main BME280 library code is in the [lib](lib) directory.
 
 ## Status
 This driver is still experimental.  I have 4 [BME280 Breakout](https://lowpowerlab.com/shop/product/185) sensors
