@@ -2,13 +2,41 @@
 # BME280 for Weather
 
 This is an opinionated library targeting the BME280 sensor for weather sensing only. At present, this is a commit 
-of my Platform IO project. The main BME280 library code is in the [lib](lib) directory.
+of my [Platform IO](https://platformio.org/) project. The main BME280 library code is in the [lib](lib) directory.
 
 ## Status
 This driver is still experimental.  I have 4 [BME280 Breakout](https://lowpowerlab.com/shop/product/185) sensors
 from [LowPowerLab](https://lowpowerlab.com/) which I am testing on the [MoteinoM0 R1](https://lowpowerlab.com/shop/product/184)
 
 **Note**: I do not have any affiliation or relationship with [LowPowerLab](https://lowpowerlab.com/). I just like their quality products.
+
+## Assumptions
+* Your project is running on a battery
+* Your project is transmitting your results over a RF transmitter
+* Your project is only transmitting results when values change more than a certain threshold or minimal amount of time, ie every 15 minutes.
+
+## Reading and Intrepting the Results
+
+Note that the type `BME280_Reading` holds the temperature, humidity and pressure readings. Since the micro-controller 
+I am using, Corext M0+, does not have native floating point operations, doing floating point math is relatively expensive.
+Therefore the measurement values do not represent real world reportable values. The reason for this is in typical battery 
+operated weather sensor, you will only publish your readings if they have changed more than some threshold. Publishing of 
+results is assumed to be a power expensive operation due to turning on RF radio transmitter.
+
+### Temperature
+
+Temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.  To get the real temperature,
+divide by 100.0.
+
+### Humidity
+
+Humidity in %RH as unsigned 32 bit integer in Q22. 10 format (22 integer and 10 fractional bits). 
+Output value of “47445” represents 47445/1024 = 46.333 %RH.  To get the real humidity values divide by 1024.0
+
+### Pressure
+
+Pressure in Pa as unsigned 32 bit integer. Output value of "96386"  96386 Pa = 963.86 hPa
+
 
 ## Motivation
 Many of the alternative libraries are designed to be generic and suit any of the recommended modes of operation, including,
